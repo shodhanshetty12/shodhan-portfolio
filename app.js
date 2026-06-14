@@ -1,4 +1,5 @@
 const THEME_KEY = "portfolio-theme";
+const NAV_WIDTH_KEY = "portfolio-nav-width";
 const TRAILBLAZER_URL = "https://www.salesforce.com/trailblazer/fka50vtwlibhq5qk6l";
 
 const salesforceAchievements = [
@@ -104,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initAnimatedCounters();
     initScrollProgress(elements);
     initFloatingTop(elements);
+    initNavResize(elements);
     hideLoadingScreen(elements.loadingScreen);
 
     window.addEventListener("resize", () => updateNavIndicator(elements));
@@ -129,6 +131,8 @@ function getElements() {
         navList: document.getElementById("navList"),
         navLinks: [...document.querySelectorAll(".nav__link")],
         navIndicator: document.getElementById("navIndicator"),
+        navShell: document.querySelector(".nav-shell"),
+        navResizeHandle: document.getElementById("navResizeHandle"),
         typingText: document.getElementById("typingText"),
         particles: document.getElementById("particles"),
         certificationsGrid: document.getElementById("certificationsGrid"),
@@ -728,6 +732,123 @@ function initPlaceholderButtons() {
             showToast("Certificate verification link will be updated when available.", document.getElementById("toast"));
         });
     });
+}
+
+function initNavResize(elements) {
+    const { navShell, navResizeHandle } = elements;
+    if (!navShell || !navResizeHandle) {
+        return;
+    }
+
+    const minWidth = 200;
+    const maxWidth = 500;
+    let isResizing = false;
+    let startX = 0;
+    let startWidth = 0;
+
+    const savedWidth = getStoredNavWidth();
+    if (savedWidth) {
+        applyNavWidth(savedWidth, elements);
+    }
+
+    navResizeHandle.addEventListener("mousedown", (e) => {
+        isResizing = true;
+        startX = e.clientX;
+        startWidth = navShell.offsetWidth;
+        document.body.style.cursor = "ew-resize";
+        document.body.style.userSelect = "none";
+        e.preventDefault();
+    });
+
+    navResizeHandle.addEventListener("touchstart", (e) => {
+        isResizing = true;
+        startX = e.touches[0].clientX;
+        startWidth = navShell.offsetWidth;
+        document.body.style.cursor = "ew-resize";
+        document.body.style.userSelect = "none";
+        e.preventDefault();
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (!isResizing) {
+            return;
+        }
+
+        const deltaX = e.clientX - startX;
+        const newWidth = Math.max(minWidth, Math.min(maxWidth, startWidth + deltaX));
+        applyNavWidth(newWidth, elements);
+    });
+
+    document.addEventListener("touchmove", (e) => {
+        if (!isResizing) {
+            return;
+        }
+
+        const deltaX = e.touches[0].clientX - startX;
+        const newWidth = Math.max(minWidth, Math.min(maxWidth, startWidth + deltaX));
+        applyNavWidth(newWidth, elements);
+    });
+
+    document.addEventListener("mouseup", () => {
+        if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = "";
+            document.body.style.userSelect = "";
+            storeNavWidth(navShell.offsetWidth);
+        }
+    });
+
+    document.addEventListener("touchend", () => {
+        if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = "";
+            document.body.style.userSelect = "";
+            storeNavWidth(navShell.offsetWidth);
+        }
+    });
+
+    navResizeHandle.addEventListener("keydown", (e) => {
+        const step = 10;
+        let newWidth = navShell.offsetWidth;
+
+        if (e.key === "ArrowRight") {
+            newWidth = Math.min(maxWidth, newWidth + step);
+            applyNavWidth(newWidth, elements);
+            storeNavWidth(newWidth);
+        } else if (e.key === "ArrowLeft") {
+            newWidth = Math.max(minWidth, newWidth - step);
+            applyNavWidth(newWidth, elements);
+            storeNavWidth(newWidth);
+        }
+    });
+}
+
+function applyNavWidth(width, elements) {
+    const { navShell } = elements;
+    if (!navShell) {
+        return;
+    }
+
+    navShell.style.width = `${width}px`;
+    const margin = width + 40;
+    document.querySelector("main").style.marginLeft = `${margin}px`;
+    document.querySelector(".footer").style.marginLeft = `${margin}px`;
+}
+
+function getStoredNavWidth() {
+    try {
+        return localStorage.getItem(NAV_WIDTH_KEY);
+    } catch (error) {
+        return null;
+    }
+}
+
+function storeNavWidth(width) {
+    try {
+        localStorage.setItem(NAV_WIDTH_KEY, width);
+    } catch (error) {
+        console.warn("Nav width preference could not be saved.");
+    }
 }
 
 function hideLoadingScreen(loadingScreen) {
