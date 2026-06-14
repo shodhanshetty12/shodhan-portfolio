@@ -1,0 +1,29 @@
+# Node.js dependencies (if you use node for build)
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# VSCode settings
+.vscode/
+
+# Build output folders (if applicable)
+dist/
+build/
+
+# Environment files
+.env
+
+# Mac system files
+._*
+
+# SASS cache files
+.sass-cache/
+
+# Optional: Ignore any temp files or editors backup files
+*~
