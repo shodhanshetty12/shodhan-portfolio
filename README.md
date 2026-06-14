@@ -88,7 +88,6 @@ A modern, responsive portfolio website featuring:
 
 - **Name:** Shodhan Kumar Shetty
 - **Email:** [shodhankumarshetty963@gmail.com](mailto:shodhankumarshetty963@gmail.com)
-- **Phone:** +91 7204211400
 - **LinkedIn:** [Connect with me](https://www.linkedin.com/in/shodhan-kumar-shetty-182568252)
 - **GitHub:** [@shodhanshetty12](https://github.com/shodhanshetty12)
 
