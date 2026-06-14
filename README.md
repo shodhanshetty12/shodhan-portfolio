@@ -8,14 +8,6 @@
 
 </div>
 
----
-- **Name:** Shodhan Kumar Shetty
-- **Email:** [shodhankumarshetty963@gmail.com](mailto:shodhankumarshetty963@gmail.com)
-- **LinkedIn:** [Connect with me](https://www.linkedin.com/in/shodhan-kumar-shetty-182568252)
-- **GitHub:** [@shodhanshetty12](https://github.com/shodhanshetty12)
-
----
-
 <div align="center">
 
 **© 2024 Shodhan Kumar Shetty. All rights reserved.**
