@@ -398,23 +398,28 @@ function renderSalesforceSection(container) {
         return;
     }
 
-    const badges = salesforceAchievements
-        .map((achievement) => `<span class="pill">${achievement}</span>`)
+    const achievementsList = salesforceAchievements
+        .map((achievement) => `<li>${achievement}</li>`)
         .join("");
 
     container.innerHTML = `
-        <div class="salesforce-section__header">
-            <div class="salesforce-section__brand">
-                <div class="dynamic-card__icon salesforce-logo" aria-hidden="true">SF</div>
-                <div>
-                    <p class="timeline__label">Salesforce Achievements</p>
-                    <h3>Salesforce Trailblazer Profile</h3>
-                    <p>Verified Salesforce credentials, superbadges, and Agentblazer achievements earned through Trailhead.</p>
-                </div>
+        <article class="dynamic-card glass reveal">
+            <div class="dynamic-card__icon salesforce-logo" aria-hidden="true">SF</div>
+            <div class="dynamic-card__meta">
+                <span>Certification Ecosystem</span>
+                <span>2025 – 2026</span>
             </div>
-            <a href="${TRAILBLAZER_URL}" class="btn btn--primary" target="_blank" rel="noopener noreferrer">View Trailblazer Profile</a>
-        </div>
-        <div class="achievement-badges">${badges}</div>
+            <div>
+                <h3>Salesforce Ecosystem Achievements</h3>
+                <p>Comprehensive Salesforce credentials including Developer certification, Champion status, Ranger achievement, and multiple specialized superbadges.</p>
+                <ul class="salesforce-achievements-list">
+                    ${achievementsList}
+                </ul>
+            </div>
+            <div class="project-card__actions">
+                <a href="${TRAILBLAZER_URL}" class="btn btn--primary" target="_blank" rel="noopener noreferrer">View Salesforce Profile</a>
+            </div>
+        </article>
     `;
 }
 
@@ -612,10 +617,27 @@ function initExperienceToggle() {
     });
 }
 
+function calculateToolsCount() {
+    const skillBadges = document.querySelectorAll(".skill-badges span");
+    return skillBadges.length;
+}
+
 function initAnimatedCounters() {
     const counters = document.querySelectorAll(".counter");
     if (!counters.length) {
         return;
+    }
+
+    // Set dynamic tools count
+    const toolsCount = calculateToolsCount();
+    const toolsCounter = document.getElementById("toolsCounter");
+    const resumeToolsCounter = document.getElementById("resumeToolsCounter");
+    
+    if (toolsCounter) {
+        toolsCounter.dataset.target = toolsCount;
+    }
+    if (resumeToolsCounter) {
+        resumeToolsCounter.dataset.target = toolsCount;
     }
 
     const animateCounter = (counter) => {
