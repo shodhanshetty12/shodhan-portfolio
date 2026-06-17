@@ -127,6 +127,7 @@ function getElements() {
         html: document.documentElement,
         themeToggle: document.getElementById("themeToggle"),
         navToggle: document.getElementById("navToggle"),
+        navClose: document.getElementById("navClose"),
         navMenu: document.getElementById("navMenu"),
         navList: document.getElementById("navList"),
         navLinks: [...document.querySelectorAll(".nav__link")],
@@ -254,11 +255,16 @@ function initTypingEffect(target) {
 }
 
 function initNavigation(elements) {
-    const { navToggle, navMenu, navLinks, sections } = elements;
+    const { navToggle, navClose, navMenu, navLinks, sections } = elements;
 
     navToggle?.addEventListener("click", () => {
         const isOpen = navMenu.classList.toggle("is-open");
         navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    navClose?.addEventListener("click", () => {
+        navMenu?.classList.remove("is-open");
+        navToggle?.setAttribute("aria-expanded", "false");
     });
 
     document.addEventListener("click", (event) => {
